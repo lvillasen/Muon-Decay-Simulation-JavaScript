@@ -12,6 +12,9 @@ It can be used as a complement to the code given in https://github.com/lvillasen
 
 - Open the file index.html with any web browser
 
+## Live Demo
+
+https://ciiec.buap.mx/MuonDecay
 
 ## License
 
