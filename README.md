@@ -10,7 +10,7 @@ It can be used as a complement to the code given in https://github.com/lvillasen
 
 - Clone the repository
 
-- Open the index.html file with any web browser
+- Open the file index.html with any web browser
 
 
 ## License
