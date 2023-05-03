@@ -1,6 +1,6 @@
 # Muon-Decay-Simulation-JavaScript
 
-Monte Carlo simulation of double-pulse events due to muon decays in a simple scintillation detector for educational purposes written in html/JavaScript.
+Monte Carlo simulation of double-pulse events due to muon decays in a simple scintillation or water Cherenkov detector for educational purposes written in html/JavaScript.
 
 A similar code written in Python can be found at https://github.com/lvillasen/Muon-Decay-Simulation.
 
