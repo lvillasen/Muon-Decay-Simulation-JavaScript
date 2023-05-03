@@ -7,8 +7,10 @@ A similar code written in Python can be found at https://github.com/lvillasen/Mu
 It can be used as a complement to the code given in https://github.com/lvillasen/RedPitaya-Muon-Decay to perform the muon-decay experiment using a RedPytaya board.
 
 ## Usage
-Clone the repository 
-Open index.html with any web explorer
+
+- Clone the repository
+- Open the index.html file with any web browser
+
 
 ## License
 
