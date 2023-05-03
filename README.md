@@ -8,9 +8,8 @@ It can be used as a complement to the code given in https://github.com/lvillasen
 
 ## Usage
 
-- Clone the repository
-
-- Open the file index.html with any web browser
+  Clone the repository
+  Open the file index.html with any web browser
 
 ## Live Demo
 
