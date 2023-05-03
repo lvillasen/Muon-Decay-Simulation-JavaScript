@@ -9,6 +9,7 @@ It can be used as a complement to the code given in https://github.com/lvillasen
 ## Usage
 
 - Clone the repository
+
 - Open the index.html file with any web browser
 
 
