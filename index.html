@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+</script>
+<title>Muon-Decay</title>
+    <link href="https://ciiec.buap.mx/Pagina-CIIEC/ciiec-logo.png" rel="icon" type="image/x-icon" />
+
+    <link rel="stylesheet" href="./muon_decay.css">
+</head>
+
+
+
+
+<body>
+    
+<div class="block_container"  style="background-color: #00b5e2; margin-left:10%; margin-right:10%;">    <p> </p>
+    <p> </p>
+    <br>
+
+        <h1> Muon Decay Simulation</h1>
+
+     
+        <h2> CIIEC-BUAP</h2>
+
+      <p style="font-size: 30px; margin-left: 80%;">May, 3th, 2023 </p>
+        <p style="font-size: 20px; margin-left: 80%;"><a href="https://github.com/lvillasen/Muon-Decay-Simulation-JavaScript/" >Source Code</a> </p>
+        
+        <hr>
+
+<p style="color:black;font-size:30px;">
+The <a href="https://www.wondriumdaily.com/cosmic-rays-and-the-discovery-of-the-unseen-particles/">muon </a> is a subatomic particle discovered in cosmic rays in 1937 by Carl Anderson and Seth Neddermeyer. It decays by means of the weak force with the decay modes
+
+$$
+\boldsymbol{\mu ^- \rightarrow e^- + \overline{v}_e + v_{\mu}}
+$$
+
+$$
+\boldsymbol{\mu ^+ \rightarrow e^+ + {v}_e + \overline{v}_{\mu}}
+$$
+
+with a lifetime in vacuum of 2.19 $\mu s $, however, when negative muons decay in a medium, besides decaying they can be captured by protons of the nuclei of the medium 
+
+$$
+\boldsymbol{\mu ^- + p \rightarrow n + v_{\mu}},
+$$
+
+
+resulting in an average measurement of the lifetime of positive and negative muons lower than 2.19 $\mu s $.
+<h2> Muon Decay Experiment</h2>
+
+<p style="color:black;font-size:30px;">
+A typical table-top experiment to study muon decays measures the time between a first pulse, produced by a low-energy muon from the secondary cosmic rays that reaches and stops inside a detector, and a second pulse due to an electron or positron resulting from the muon decay. These pulses can be produced by the interaction of the muon in a solid or liquid scintillator material or by Cherenkov effect in a water container. In turn, the tiny light produced can be amplified by a photomultiplier tube coupled to the detector material. More details can be found <a href="https://pubs.aip.org/aip/acp/article/422/1/333/633457/Muon-lifetime-measurement">here</a>.
+
+The background noise consists of two pulses produced by two muons that enter the detector in coincidence within a short time window, in our case of 20 $\mu s$.
+
+
+<h2> Muon Decay Simulation</h2>
+<p style="color:black;font-size:30px;">
+We simulate double pulses within a time window of 20 $\mu s$. Both pulses are exponential with a decay time of 100 ns. The first pulse has a random amplitude between 20 mV and 80 mV and the second pulse between 20 mV and 50 mV. These values are arbitrary for the purpose of the simulation. The time interval between the 2 pulses is chosen between 0 and 20 $\mu s$ with a probability distribution given by
+
+$$
+P(t) = A +B e^{-\frac{t}{\tau}}
+$$
+
+where $P(t)dt $ is the probability that the second pulse occurs between $t$ and $t+dt$ given that the first pulse occurs at $t=0$
+
+The relation between A and B controls the amount of background noise.
+
+We arbitrarily select
+
+$$
+\tau = 2.000 \: \mu s \\
+A = 0.1 \\
+B = 1.0
+$$
+
+so that the average background noise is half the number of events, i.e., in average the signal and the background noise are equal. This is due to the fact that the area under the signal curve ($Ae^{-\frac{t}{\tau}}$) is equal to the area under the background noise curve ($B$).   
+
+The simulated pulses are sampled every 8 ns.
+ <br>
+ <br>
+A similar simulation written in Python can be found <a href="https://github.com/lvillasen/Muon-Decay-Simulations">here</a>.
+
+<h2> Data Analysis</h2>
+
+<p style="color:black;font-size:30px;">
+
+    We estimate the background noise by counting the number of events between 10 $\mu s$ and 20 $\mu s$ and multiplying this number by 2, under the assumtion that the background noise due to double coincidences has a flat distribution.
+
+    Then we subtract the estimated background noise from the data and take the natural logarithm to convert the exponential distribution to a <a href="https://www.spiceworks.com/tech/artificial-intelligence/articles/what-is-linear-regression/">linear regression</a>  problem.
+  
+
+  The least squares method consists in finding the values of the slope $m$ and the y-intercept $b$ that minimize the sum of square errors:
+
+$$
+\begin{align}
+SSE &= \sum_{i=1}^{N}(y_{i}-m*x_{i}-b)^2
+\end{align}
+$$
+
+where in our case the values $y_i$ are the natural logarithm of the background subtracted data. We only use the number of points N such that $\{y_1,y_2,.....,y_N\}$ are positive background-subtracted values, so that their natural logarithms exist. See the second plot below to clarify this point.
+
+
+The solutions for the slope $m$ and the y-intercept $b$ are
+
+ <br>
+
+
+$$
+m = \frac{N\sum_{\substack{i=1}}^N x_i y_i - (\sum_{\substack{i=1}}^N x_i)(\sum_{\substack{i=1}}^N y_i)}{N\sum_{\substack{i=1}}^N x_i^2 - (\sum_{\substack{i=1}}^N x_i)^2} 
+$$
+
+$$
+b = \frac{\sum_{\substack{i=1}}^N y_i - m\sum_{\substack{i=1}}^N x_i}{N} 
+$$
+
+
+
+By propagation of the errors on the expression for $m$ we get the standard error on the slope given by
+
+$$
+\delta_m = \sqrt{\frac{1}{N-2} \frac{\sum_{\substack{i=1}}^N(y_i - \bar y)^2}{\sum_{\substack{i=1}}^N (x_i - \bar x_i)^2} }
+$$
+
+<hr>
+ 
+
+
+ <div  class="block_container" style="background-color: #00b5e2; width:100%;">
+        <div id="plot1" style= " border:solid 5px #003b5c; width:100%;"></div>
+    </div> 
+
+
+<div id="block_container" style="text-align:center;">
+            
+        
+        <input class="favorite styled" type="button" id="start_stop" value="Start" onclick="start();">
+        <input class="favorite styled" type="button" id="sreset" value="Reset" onclick="reset();">
+              <label style="font-size: 15pt;margin-left: 20px;"> Background Subtracted </label>
+
+       <input id="back_subtracted" type="checkbox" onchange="draw()">
+
+       <label style="font-size: 15pt;margin-left: 20px;"> Log Scale </label>
+                  <input id="logscale" type="checkbox" onchange="draw()">
+
+    </div>
+
+    <div  id="my_element"  class="block_container" style="background-color: #00b5e2; width:100%;">
+        <div id="plot2" style= " border:solid 5px #003b5c; width:100%;"></div>
+    </div> 
+
+            <br>
+</body>
+
+
+<script type="text/javascript" src="./muon_decay.js"></script>
+
+</html>
